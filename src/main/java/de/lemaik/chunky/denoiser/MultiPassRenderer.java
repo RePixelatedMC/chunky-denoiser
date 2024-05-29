@@ -3,6 +3,7 @@ package de.lemaik.chunky.denoiser;
 import se.llbit.chunky.renderer.DefaultRenderManager;
 import se.llbit.chunky.renderer.TileBasedRenderer;
 import se.llbit.chunky.renderer.scene.Camera;
+import se.llbit.chunky.renderer.scene.CanvasConfig;
 import se.llbit.chunky.renderer.scene.RayTracer;
 import se.llbit.chunky.renderer.scene.Scene;
 
@@ -10,8 +11,8 @@ public abstract class MultiPassRenderer extends TileBasedRenderer {
     protected void renderPass(DefaultRenderManager manager, int passSpp, RayTracer[] tracers, float[][] renderBuffers, boolean[] tracerMask) throws InterruptedException {
         Scene scene = manager.bufferedScene;
         double[] sampleBuffer = scene.getSampleBuffer();
-        int width = scene.width;
-        int height = scene.height;
+        int width = CanvasConfig.MIN_CANVAS_WIDTH;
+        int height = CanvasConfig.MIN_CANVAS_HEIGHT;
 
         Camera cam = scene.camera();
         double halfWidth = width / (2.0 * height);

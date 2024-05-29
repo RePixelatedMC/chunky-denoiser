@@ -2,6 +2,7 @@ package de.lemaik.chunky.denoiser;
 
 import de.lemaik.chunky.denoiser.pfm.PortableFloatMap;
 import se.llbit.chunky.renderer.DefaultRenderManager;
+import se.llbit.chunky.renderer.scene.CanvasConfig;
 import se.llbit.chunky.renderer.scene.RayTracer;
 import se.llbit.chunky.renderer.scene.Scene;
 import se.llbit.log.Log;
@@ -81,14 +82,15 @@ public class DenoiserPassRenderer extends MultiPassRenderer {
 
         if (!aborted && settings.saveBeauty.get()) {
             File out = manager.context.getSceneFile(scene.name + ".beauty.pfm");
-            scene.saveFrame(out, PortableFloatMap.getPfmExportFormat(),
-                    TaskTracker.NONE, manager.context.numRenderThreads());
+//            scene.saveFrame(out, PortableFloatMap.getPfmExportFormat(),
+//                    TaskTracker.NONE, manager.context.numRenderThreads());
+            scene.saveFrame(out, TaskTracker.NONE);
         }
 
         if (!aborted && settings.saveAlbedo.get()) {
             File out = manager.context.getSceneFile(scene.name + ".albedo.pfm");
             try (OutputStream os = new BufferedOutputStream(new FileOutputStream(out))) {
-                PortableFloatMap.writeImage(buffers[0], scene.width, scene.height, ByteOrder.LITTLE_ENDIAN, os);
+                PortableFloatMap.writeImage(buffers[0], CanvasConfig.MIN_CANVAS_WIDTH, CanvasConfig.MIN_CANVAS_HEIGHT, ByteOrder.LITTLE_ENDIAN, os);
             } catch (IOException e) {
                 Log.error("Failed to save albedo pass", e);
             }
@@ -97,7 +99,7 @@ public class DenoiserPassRenderer extends MultiPassRenderer {
         if (!aborted && settings.saveNormal.get()) {
             File out = manager.context.getSceneFile(scene.name + ".normal.pfm");
             try (OutputStream os = new BufferedOutputStream(new FileOutputStream(out))) {
-                PortableFloatMap.writeImage(buffers[1], scene.width, scene.height, ByteOrder.LITTLE_ENDIAN, os);
+                PortableFloatMap.writeImage(buffers[1], CanvasConfig.MIN_CANVAS_WIDTH, CanvasConfig.MIN_CANVAS_HEIGHT, ByteOrder.LITTLE_ENDIAN, os);
             } catch (IOException e) {
                 Log.error("Failed to save normal pass", e);
             }
@@ -108,7 +110,7 @@ public class DenoiserPassRenderer extends MultiPassRenderer {
                 ((OidnBinaryDenoiser) denoiser).loadPath();
 
             try {
-                denoiser.denoiseDouble(scene.width, scene.height, sampleBuffer,
+                denoiser.denoiseDouble(CanvasConfig.MIN_CANVAS_WIDTH, CanvasConfig.MIN_CANVAS_HEIGHT, sampleBuffer,
                         buffers[0], buffers[1], sampleBuffer);
 
                 scene.spp = scene.getTargetSpp();

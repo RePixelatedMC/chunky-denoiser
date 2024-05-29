@@ -4,7 +4,6 @@ import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import se.llbit.chunky.renderer.scene.Scene;
-import se.llbit.chunky.ui.RenderControlsFxController;
 import se.llbit.chunky.ui.render.RenderControlsTab;
 
 public class DenoiserTabImpl implements RenderControlsTab {
@@ -20,11 +19,7 @@ public class DenoiserTabImpl implements RenderControlsTab {
         this.scene = scene;
         settings.setScene(scene);
     }
-
-    @Override
-    public void setController(RenderControlsFxController controller) {
-    }
-
+    
     @Override
     public String getTabTitle() {
         return "Denoiser";

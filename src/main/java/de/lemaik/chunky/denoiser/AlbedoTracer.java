@@ -1,7 +1,7 @@
 package de.lemaik.chunky.denoiser;
 
-import se.llbit.chunky.block.Air;
-import se.llbit.chunky.block.Water;
+//import se.llbit.chunky.block.Air;
+//import se.llbit.chunky.block.Water;
 import se.llbit.chunky.renderer.WorkerState;
 import se.llbit.chunky.renderer.scene.PreviewRayTracer;
 import se.llbit.chunky.renderer.scene.RayTracer;
@@ -13,9 +13,9 @@ public class AlbedoTracer implements RayTracer {
     public void trace(Scene scene, WorkerState state) {
         Ray ray = state.ray;
         if (scene.isInWater(ray)) {
-            ray.setCurrentMaterial(Water.INSTANCE, 0);
+            ray.setCurrentMaterial(ChunkyCompatHelper.Water.INSTANCE, 0);
         } else {
-            ray.setCurrentMaterial(Air.INSTANCE, 0);
+            ray.setCurrentMaterial(ChunkyCompatHelper.Air.INSTANCE, 0);
         }
 
         while (true) {
@@ -33,7 +33,7 @@ public class AlbedoTracer implements RayTracer {
                 break;
             }
 
-            if (ray.getCurrentMaterial() != Air.INSTANCE && ray.color.w > 0.0D) {
+            if (ray.getCurrentMaterial() != ChunkyCompatHelper.Air.INSTANCE && ray.color.w > 0.0D) {
                 break;
             }
 
